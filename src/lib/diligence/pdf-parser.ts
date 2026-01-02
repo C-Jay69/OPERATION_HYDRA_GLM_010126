@@ -1,18 +1,16 @@
-// Using CommonJS require for pdf-parse to avoid webpack issues
+import pdf from 'pdf-parse';
 
 export async function parsePDF(filePath: string): Promise<string> {
   try {
     const fs = await import('fs/promises');
     const dataBuffer = await fs.readFile(filePath);
 
-    // Use require instead of import for pdf-parse
-    const pdfParse = require('pdf-parse');
-    const data = await pdfParse(dataBuffer);
+    const data = await pdf(dataBuffer);
 
     // Extract full text
     const fullText = data.text;
 
-    // Clean up the text
+    // Clean up text
     const cleanedText = fullText
       // Remove excessive whitespace
       .replace(/\s+/g, ' ')
@@ -32,9 +30,7 @@ export async function parsePDF(filePath: string): Promise<string> {
 
 export async function extractTextFromPDFBuffer(buffer: Buffer): Promise<string> {
   try {
-    // Use require instead of import for pdf-parse
-    const pdfParse = require('pdf-parse');
-    const data = await pdfParse(buffer);
+    const data = await pdf(buffer);
 
     // Extract and clean text
     const fullText = data.text;
